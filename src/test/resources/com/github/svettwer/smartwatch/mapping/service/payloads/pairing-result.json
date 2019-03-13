@@ -1,0 +1,5 @@
+{
+  "customer": "${customerId}",
+  "device": "${deviceId}",
+  "result": "${pairingResult}"
+}

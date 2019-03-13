@@ -1,0 +1,4 @@
+{
+  "customer": "${customerId}",
+  "device": "${deviceId}"
+}
