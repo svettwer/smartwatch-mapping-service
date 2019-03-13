@@ -7,4 +7,4 @@ A sample Microservice with BDD and Citrus integration tests using Apache Kafka.
 # Scope of this project
 As the system architecture overview shows, we've a lot of system involved. Nevertheless the testing scope of this
 project is limited to the integrations of the Device-Pairing Service. Therefore, we'll just simulate the surrounding
-Systems of our system under test using Citrus. The other services of the architecture are not represented here. 
+Systems of our system under test using Citrus. The other services of the architecture are not involved here. 
