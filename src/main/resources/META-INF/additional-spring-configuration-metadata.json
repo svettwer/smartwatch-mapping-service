@@ -1,0 +1,24 @@
+{
+  "properties": [
+    {
+      "name": "mapping.service.jdbc.driverClassName",
+      "type": "java.lang.String",
+      "description": "Full qualified class name for JDBC driver."
+    },
+    {
+      "name": "mapping.service.jdbc.url",
+      "type": "java.lang.String",
+      "description": "JDBC connection url."
+    },
+    {
+      "name": "mapping.service.jdbc.username",
+      "type": "java.lang.String",
+      "description": "JDBC user name."
+    },
+    {
+      "name": "mapping.service.jdbc.password",
+      "type": "java.lang.String",
+      "description": "JDBC user password."
+    }
+  ]
+}

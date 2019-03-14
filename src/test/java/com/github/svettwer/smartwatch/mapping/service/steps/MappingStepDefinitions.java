@@ -2,17 +2,12 @@ package com.github.svettwer.smartwatch.mapping.service.steps;
 
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.dsl.runner.TestRunner;
-import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jdbc.message.JdbcMessage;
-import com.consol.citrus.kafka.message.KafkaMessageHeaders;
 import com.consol.citrus.message.MessageType;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.apache.http.entity.ContentType;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -37,19 +32,16 @@ public class MappingStepDefinitions {
                 .post("/pairing")
                 .messageType(MessageType.JSON)
                 .contentType(ContentType.APPLICATION_JSON.toString())
-                .payload(pairingRequestTemplate));
-
-        runner.http(http -> http
-                .client("smartphoneClient")
-                .receive()
-                .response(HttpStatus.OK));
+                .payload(pairingRequestTemplate)
+                .fork(true));
 
         runner.receive(receiveMessageBuilder -> receiveMessageBuilder
                 .endpoint("smartwatchMappingDatabase")
                 .messageType(MessageType.JSON)
                 .message(JdbcMessage.execute(
                         "INSERT INTO pairings (customer_id, device_id, temporary) " +
-                                "VALUES (${customerId}, ${deviceId}, TRUE)")));
+                                "VALUES (?, ?, ?) - " +
+                                "(${customerId},${deviceId},true)")));
 
         runner.send(sendMessageBuilder -> sendMessageBuilder
                 .endpoint("smartwatchMappingDatabase")
@@ -59,6 +51,12 @@ public class MappingStepDefinitions {
                 .endpoint("temporaryPairingEndpoint")
                 .messageType(MessageType.JSON)
                 .payload(pairingRequestTemplate));
+
+        runner.http(http -> http
+                .client("smartphoneClient")
+                .receive()
+                .response(HttpStatus.OK));
+
     }
 
     @When("the pairing was successful")

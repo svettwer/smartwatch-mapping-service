@@ -25,6 +25,7 @@
         <surefire.version>3.0.0-M3</surefire.version>
         <junit.version>4.12</junit.version>
         <citrus.version>2.8.0</citrus.version>
+        <citrus.db.version>0.1.4</citrus.db.version>
         <cucumber.version>3.0.2</cucumber.version>
         <log4j.version>2.11.2</log4j.version>
     </properties>
@@ -47,6 +48,14 @@
                 <version>${spring.boot.version}</version>
                 <configuration>
                     <fork>true</fork>
+                    <environmentVariables>
+                        <DATABASE_TYPE>citrus</DATABASE_TYPE>
+                        <DATABASE_HOST>localhost</DATABASE_HOST>
+                        <DATABASE_PORT>13306</DATABASE_PORT>
+                        <DATABASE_USER>foo</DATABASE_USER>
+                        <DATABASE_PASSWORD>bar</DATABASE_PASSWORD>
+                        <DATABASE_DRIVER_CLASS_NAME>com.consol.citrus.db.driver.JdbcDriver</DATABASE_DRIVER_CLASS_NAME>
+                    </environmentVariables>
                 </configuration>
                 <executions>
                     <execution>
@@ -73,9 +82,26 @@
             <version>${spring.boot.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>5.1.5.RELEASE</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
             <version>${spring.kafka.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.consol.citrus</groupId>
+            <artifactId>citrus-db-driver</artifactId>
+            <version>${citrus.db.version}</version>
         </dependency>
 
         <dependency>
