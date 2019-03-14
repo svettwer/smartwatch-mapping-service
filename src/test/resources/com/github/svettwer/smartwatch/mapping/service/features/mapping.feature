@@ -1,4 +1,4 @@
-Feature: Mapping smartwatch
+Feature: Smartwatch mapping
   Maps a smartwatch to a customers account
 
   Scenario: New pairing
