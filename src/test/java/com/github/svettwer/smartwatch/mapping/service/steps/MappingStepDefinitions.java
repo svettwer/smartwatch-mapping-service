@@ -61,6 +61,7 @@ public class MappingStepDefinitions {
 
     @When("the pairing was successful")
     public void thePairingWasSuccessful() {
+        runner.variable("pairingResult", true);
         runner.send(receiveMessageBuilder -> receiveMessageBuilder
                 .endpoint("pairingResultEndpoint")
                 .messageType(MessageType.JSON)

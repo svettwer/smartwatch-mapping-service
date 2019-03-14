@@ -9,12 +9,12 @@ public class PairingResult implements Serializable {
 
     private UUID deviceId;
     private UUID customerId;
-    private boolean temporary;
+    private boolean wasSuccessful;
 
-    public PairingResult(final UUID customerId, final UUID deviceId, final Boolean temporary) {
+    public PairingResult(final UUID customerId, final UUID deviceId, final Boolean wasSuccessful) {
         this.customerId = customerId;
         this.deviceId = deviceId;
-        this.temporary = temporary;
+        this.wasSuccessful = wasSuccessful;
     }
 
     public UUID getCustomerId() {
@@ -27,8 +27,8 @@ public class PairingResult implements Serializable {
     }
 
 
-    public boolean getTemporary() {
-        return temporary;
+    public boolean getWasSuccessful() {
+        return wasSuccessful;
     }
 
 
@@ -39,11 +39,11 @@ public class PairingResult implements Serializable {
         final PairingResult pairingResult = (PairingResult) o;
         return Objects.equals(customerId, pairingResult.customerId) &&
                 Objects.equals(deviceId, pairingResult.deviceId) &&
-                Objects.equals(temporary, pairingResult.temporary);
+                Objects.equals(wasSuccessful, pairingResult.wasSuccessful);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerId, deviceId, temporary);
+        return Objects.hash(customerId, deviceId, wasSuccessful);
     }
 }
