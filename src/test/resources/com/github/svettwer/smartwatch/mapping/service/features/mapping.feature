@@ -1,7 +1,7 @@
 Feature: Mapping smartwatch
   Maps a smartwatch to a customers account
 
-  Scenario: Create new mapping
+  Scenario: New pairing
     Given a new paring is initiated
     When the pairing was successful
     Then the pairing is persisted in the database

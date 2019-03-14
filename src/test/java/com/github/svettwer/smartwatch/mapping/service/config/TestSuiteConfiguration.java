@@ -1,19 +1,30 @@
 package com.github.svettwer.smartwatch.mapping.service.config;
 
+import com.consol.citrus.container.SequenceBeforeSuite;
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jdbc.server.JdbcServer;
 import com.consol.citrus.kafka.embedded.EmbeddedKafkaServer;
 import com.consol.citrus.kafka.embedded.EmbeddedKafkaServerBuilder;
 import com.consol.citrus.kafka.endpoint.KafkaEndpoint;
+import com.consol.citrus.variable.GlobalVariables;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 
 @Configuration
-public class EndpointConfig {
+public class TestSuiteConfiguration {
 
     @Bean
-    public HttpClient httpClient(){
+    public GlobalVariables globalVariables(){
+        final GlobalVariables globalVariables = new GlobalVariables();
+        globalVariables.getVariables().put("customerId", "citrus:randomUUID()");
+        globalVariables.getVariables().put("deviceId", "citrus:randomUUID()");
+        return globalVariables;
+    }
+
+    @Bean
+    public HttpClient smartphoneClient(){
         return CitrusEndpoints.http()
                 .client()
                 .requestUrl("http://localhost:8080")
@@ -49,7 +60,7 @@ public class EndpointConfig {
     }
 
     @Bean
-    public JdbcServer jdbcServer() {
+    public JdbcServer smartwatchMappingDatabase() {
         return CitrusEndpoints
                 .jdbc()
                 .server()
