@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 
 public class MappingStepDefinitions {
 
@@ -36,12 +37,21 @@ public class MappingStepDefinitions {
                 .messageType(MessageType.JSON)
                 .payload(pairingRequestTemplate));
 
+        runner.http(http -> http
+                .client("smartphoneClient")
+                .receive()
+                .response(HttpStatus.OK));
+
         runner.receive(receiveMessageBuilder -> receiveMessageBuilder
                 .endpoint("smartwatchMappingDatabase")
                 .messageType(MessageType.JSON)
                 .message(JdbcMessage.execute(
                         "INSERT INTO pairings (customer_id, device_id, temporary) " +
                                 "VALUES (${customerId}, ${deviceId}, TRUE)")));
+
+        runner.send(sendMessageBuilder -> sendMessageBuilder
+                .endpoint("smartwatchMappingDatabase")
+                .message(JdbcMessage.success()));
 
         runner.receive(receiveMessageBuilder -> receiveMessageBuilder
                 .endpoint("temporaryPairingEndpoint")
@@ -66,5 +76,9 @@ public class MappingStepDefinitions {
                         "UPDATE pairings" +
                                 "SET temporary=FALSE " +
                                 "WHERE customer_id=${customerId} and device_id=${deviceId}")));
+
+        runner.send(sendMessageBuilder -> sendMessageBuilder
+                .endpoint("smartwatchMappingDatabase")
+                .message(JdbcMessage.success().rowsUpdated(1)));
     }
 }
