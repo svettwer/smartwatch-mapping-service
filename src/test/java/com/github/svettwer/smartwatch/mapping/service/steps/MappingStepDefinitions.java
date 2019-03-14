@@ -9,6 +9,7 @@ import com.consol.citrus.message.MessageType;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +36,7 @@ public class MappingStepDefinitions {
                 .send()
                 .post("/pairing")
                 .messageType(MessageType.JSON)
+                .contentType(ContentType.APPLICATION_JSON.toString())
                 .payload(pairingRequestTemplate));
 
         runner.http(http -> http
