@@ -1,6 +1,5 @@
 package com.github.svettwer.smartwatch.mapping.service.config;
 
-import com.consol.citrus.container.SequenceBeforeSuite;
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jdbc.server.JdbcServer;
@@ -10,7 +9,6 @@ import com.consol.citrus.kafka.endpoint.KafkaEndpoint;
 import com.consol.citrus.variable.GlobalVariables;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 
 @Configuration
 public class TestSuiteConfiguration {
@@ -56,6 +54,7 @@ public class TestSuiteConfiguration {
                 .asynchronous()
                 .server("localhost:9092")
                 .topic("pairing.result")
+                .consumerGroup("pairings")
                 .build();
     }
 

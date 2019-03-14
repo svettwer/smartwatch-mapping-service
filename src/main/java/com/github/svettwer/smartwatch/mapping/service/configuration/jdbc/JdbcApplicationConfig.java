@@ -1,10 +1,9 @@
 package com.github.svettwer.smartwatch.mapping.service.configuration.jdbc;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.SingleConnectionDataSource;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
 public class JdbcApplicationConfig {
@@ -23,8 +22,8 @@ public class JdbcApplicationConfig {
 
 
     @Bean
-    public SingleConnectionDataSource dataSource() {
-        final SingleConnectionDataSource dataSource = new SingleConnectionDataSource();
+    public DriverManagerDataSource dataSource() {
+        final DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(driverClassName);
         dataSource.setUrl(url);
         dataSource.setUsername(username);

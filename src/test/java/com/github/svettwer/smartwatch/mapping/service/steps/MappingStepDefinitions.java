@@ -74,9 +74,8 @@ public class MappingStepDefinitions {
                 .endpoint("smartwatchMappingDatabase")
                 .messageType(MessageType.JSON)
                 .message(JdbcMessage.execute(
-                        "UPDATE pairings" +
-                                "SET temporary=FALSE " +
-                                "WHERE customer_id=${customerId} and device_id=${deviceId}")));
+                        "UPDATE pairings SET temporary=false WHERE customer_id=? and device_id=? - " +
+                                "(${customerId},${deviceId})")));
 
         runner.send(sendMessageBuilder -> sendMessageBuilder
                 .endpoint("smartwatchMappingDatabase")
