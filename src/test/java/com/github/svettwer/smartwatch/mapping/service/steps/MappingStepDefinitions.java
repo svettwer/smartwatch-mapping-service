@@ -32,8 +32,7 @@ public class MappingStepDefinitions {
                 .post("/pairing")
                 .messageType(MessageType.JSON)
                 .contentType(ContentType.APPLICATION_JSON.toString())
-                .payload(pairingRequestTemplate)
-                .fork(true));
+                .payload(pairingRequestTemplate));
 
         runner.receive(receiveMessageBuilder -> receiveMessageBuilder
                 .endpoint("smartwatchMappingDatabase")
