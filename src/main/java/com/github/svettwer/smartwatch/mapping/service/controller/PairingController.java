@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("pairing")
+@RequestMapping("/api/pairing")
 public class PairingController {
 
     private KafkaTemplate<String, PairingRequest> kafkaTemplate;

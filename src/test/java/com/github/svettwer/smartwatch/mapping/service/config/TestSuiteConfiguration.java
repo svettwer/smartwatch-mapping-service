@@ -34,7 +34,7 @@ public class TestSuiteConfiguration {
     public HttpClient smartphoneClient(){
         return CitrusEndpoints.http()
                 .client()
-                .requestUrl("http://localhost:8080")
+                .requestUrl("http://localhost:8080/api")
                 .build();
     }
 
