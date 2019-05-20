@@ -78,6 +78,12 @@ public class TestSuiteConfiguration {
                 testRunner.sql(executeSQLBuilder -> executeSQLBuilder
                         .dataSource(dataSource())
                         .statement("DELETE * FROM `pairing`"));
+
+                testRunner.purgeEndpoints(purgeEndpointsBuilder ->
+                        purgeEndpointsBuilder.endpoint(pairingResultEndpoint()));
+
+                testRunner.purgeEndpoints(purgeEndpointsBuilder ->
+                        purgeEndpointsBuilder.endpoint(temporaryPairingEndpoint()));
             }
         };
     }
