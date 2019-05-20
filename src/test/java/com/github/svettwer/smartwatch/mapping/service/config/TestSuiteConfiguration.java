@@ -1,15 +1,26 @@
 package com.github.svettwer.smartwatch.mapping.service.config;
 
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
+import com.consol.citrus.dsl.runner.TestRunner;
+import com.consol.citrus.dsl.runner.TestRunnerAfterTestSupport;
 import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.jdbc.server.JdbcServer;
 import com.consol.citrus.kafka.endpoint.KafkaEndpoint;
 import com.consol.citrus.variable.GlobalVariables;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
 public class TestSuiteConfiguration {
+
+    private Environment env;
+
+    @Autowired
+    public TestSuiteConfiguration(final Environment env) {
+        this.env = env;
+    }
 
     @Bean
     public GlobalVariables globalVariables(){
@@ -27,7 +38,7 @@ public class TestSuiteConfiguration {
                 .build();
     }
 
-    @Bean
+    @Bean("temporaryPairingEndpoint")
     public KafkaEndpoint temporaryPairingEndpoint() {
         return CitrusEndpoints
                 .kafka()
@@ -37,7 +48,7 @@ public class TestSuiteConfiguration {
                 .build();
     }
 
-    @Bean
+    @Bean("pairingResultEndpoint")
     public KafkaEndpoint pairingResultEndpoint() {
         return CitrusEndpoints
                 .kafka()
@@ -49,14 +60,25 @@ public class TestSuiteConfiguration {
     }
 
     @Bean
-    public JdbcServer smartwatchMappingDatabase() {
-        return CitrusEndpoints
-                .jdbc()
-                .server()
-                .host("localhost")
-                .databaseName("smartwatch_mappings")
-                .port(13306)
-                .autoStart(true)
-                .build();
+    public DriverManagerDataSource dataSource() {
+        final DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
+        dataSource.setUrl(env.getProperty("jdbc.url"));
+        dataSource.setUsername(env.getProperty("jdbc.user"));
+        dataSource.setPassword(env.getProperty("jdbc.pass"));
+
+        return dataSource;
+    }
+
+    @Bean
+    public TestRunnerAfterTestSupport cleanUpDatabase(){
+        return new TestRunnerAfterTestSupport() {
+            @Override
+            public void afterTest(final TestRunner testRunner) {
+                testRunner.sql(executeSQLBuilder -> executeSQLBuilder
+                        .dataSource(dataSource())
+                        .statement("DELETE * FROM `pairing`"));
+            }
+        };
     }
 }

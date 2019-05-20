@@ -1,33 +1,32 @@
 package com.github.svettwer.smartwatch.mapping.service.configuration.jdbc;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
+@EnableJpaRepositories(basePackages = "com.github.svettwer.smartwatch.mapping.service.database")
+@EnableTransactionManagement
 public class JdbcApplicationConfig {
 
-    @Value(value = "${mapping.service.jdbc.url}")
-    private String url;
+    private Environment env;
 
-    @Value(value = "${mapping.service.jdbc.username}")
-    private String username;
-
-    @Value(value = "${mapping.service.jdbc.password}")
-    private String password;
-
-    @Value(value = "${mapping.service.jdbc.driverClassName}")
-    private String driverClassName;
-
+    @Autowired
+    public JdbcApplicationConfig(final Environment env) {
+        this.env = env;
+    }
 
     @Bean
     public DriverManagerDataSource dataSource() {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(driverClassName);
-        dataSource.setUrl(url);
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
+        dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
+        dataSource.setUrl(env.getProperty("jdbc.url"));
+        dataSource.setUsername(env.getProperty("jdbc.user"));
+        dataSource.setPassword(env.getProperty("jdbc.pass"));
 
         return dataSource;
     }

@@ -1,5 +1,6 @@
 package com.github.svettwer.smartwatch.mapping.service.controller;
 
+import com.github.svettwer.smartwatch.mapping.service.database.Pairing;
 import com.github.svettwer.smartwatch.mapping.service.database.PairingRepository;
 import com.github.svettwer.smartwatch.mapping.service.dto.PairingRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.sql.SQLException;
 
 @RestController
 public class PairingController {
@@ -26,8 +25,11 @@ public class PairingController {
     }
 
     @PostMapping("/pairing")
-    public ResponseEntity postPairing(@RequestBody final PairingRequest pairingRequest) throws SQLException{
-        pairingRepository.saveTemporaryPairing(pairingRequest);
+    public ResponseEntity postPairing(@RequestBody final PairingRequest pairingRequest) {
+        pairingRepository.save(new Pairing(
+                pairingRequest.getDeviceId(),
+                pairingRequest.getCustomerId(),
+                false));
         kafkaTemplate.send("pairing.temporary", pairingRequest);
         return ResponseEntity.ok(HttpStatus.OK);
     }
