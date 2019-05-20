@@ -31,9 +31,6 @@ public class MappingServiceIT extends TestNGCitrusTestRunner {
     private final Resource pairingRequestTemplate = new ClassPathResource(
             "com/github/svettwer/smartwatch/mapping/service/payloads/pairing-request.json");
 
-    private final Resource pairingResultTemplate = new ClassPathResource(
-            "com/github/svettwer/smartwatch/mapping/service/payloads/pairing-result.json");
-
     @CitrusTest
     @Test
     public void testNewMappingIsPropagated(){
