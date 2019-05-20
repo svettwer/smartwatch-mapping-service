@@ -3,8 +3,6 @@ package com.github.svettwer.smartwatch.mapping.service.config;
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jdbc.server.JdbcServer;
-import com.consol.citrus.kafka.embedded.EmbeddedKafkaServer;
-import com.consol.citrus.kafka.embedded.EmbeddedKafkaServerBuilder;
 import com.consol.citrus.kafka.endpoint.KafkaEndpoint;
 import com.consol.citrus.variable.GlobalVariables;
 import org.springframework.context.annotation.Bean;
@@ -26,14 +24,6 @@ public class TestSuiteConfiguration {
         return CitrusEndpoints.http()
                 .client()
                 .requestUrl("http://localhost:8080")
-                .build();
-    }
-
-    @Bean
-    public EmbeddedKafkaServer embeddedKafkaServer() {
-        return new EmbeddedKafkaServerBuilder()
-                .kafkaServerPort(9092)
-                .topics("pairing.temporary", "pairing.result")
                 .build();
     }
 

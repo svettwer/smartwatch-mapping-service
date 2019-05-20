@@ -20,7 +20,7 @@ public class PairingResultListener {
         this.pairingRepository = pairingRepository;
     }
 
-    @KafkaListener(id = "PairingResultListener", topics = "pairing.result", autoStartup = "false")
+    @KafkaListener(id = "PairingResultListener", topics = "pairing.result")
     public void listen(final String message) throws IOException, SQLException {
         final PairingResult pairingResult = new ObjectMapper().readValue(message, PairingResult.class);
 
@@ -28,6 +28,4 @@ public class PairingResultListener {
             pairingRepository.persistTemporaryPairing(pairingResult);
         }
     }
-
-
 }
