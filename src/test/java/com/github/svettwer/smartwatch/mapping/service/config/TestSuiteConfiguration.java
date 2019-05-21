@@ -45,6 +45,7 @@ public class TestSuiteConfiguration {
                 .asynchronous()
                 .server("localhost:9092")
                 .topic("pairing.temporary")
+                .consumerGroup("pairings")
                 .build();
     }
 
@@ -62,10 +63,10 @@ public class TestSuiteConfiguration {
     @Bean
     public DriverManagerDataSource dataSource() {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
-        dataSource.setUrl(env.getProperty("jdbc.url"));
-        dataSource.setUsername(env.getProperty("jdbc.user"));
-        dataSource.setPassword(env.getProperty("jdbc.pass"));
+        dataSource.setDriverClassName("org.postgresql.Driver");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/testdb");
+        dataSource.setUsername("postgres");
+        dataSource.setPassword("");
 
         return dataSource;
     }
@@ -77,7 +78,7 @@ public class TestSuiteConfiguration {
             public void afterTest(final TestRunner testRunner) {
                 testRunner.sql(executeSQLBuilder -> executeSQLBuilder
                         .dataSource(dataSource())
-                        .statement("DELETE * FROM `pairing`"));
+                        .statement("DELETE FROM pairing"));
 
                 testRunner.purgeEndpoints(purgeEndpointsBuilder ->
                         purgeEndpointsBuilder.endpoint(pairingResultEndpoint()));

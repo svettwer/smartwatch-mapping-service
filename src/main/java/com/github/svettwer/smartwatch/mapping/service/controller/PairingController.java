@@ -38,7 +38,7 @@ public class PairingController {
         pairingRepository.save(new Pairing(
                 pairingRequest.getDeviceId(),
                 pairingRequest.getCustomerId(),
-                false));
+                true));
         kafkaTemplate.send("pairing.temporary", pairingRequest);
         return ResponseEntity.ok(HttpStatus.OK);
     }
