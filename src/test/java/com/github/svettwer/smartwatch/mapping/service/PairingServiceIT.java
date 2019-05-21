@@ -16,7 +16,7 @@ import org.testng.annotations.Test;
 import javax.sql.DataSource;
 
 
-public class MappingServiceIT extends TestNGCitrusTestRunner {
+public class PairingServiceIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private HttpClient smartphoneClient;
