@@ -12,7 +12,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 @Controller
@@ -33,6 +39,16 @@ public class UiController {
         model.addAttribute("pairings", pairingService.getPairings());
         model.addAttribute("newPairing", new Pairing());
         return "home";
+    }
+
+    @GetMapping("/pairing/csv")
+    @ResponseBody
+    public void getCsv(final HttpServletResponse response) throws IOException {
+        final File pairingCsv = pairingService.getPairingsAsCsv();
+        response.setHeader("Content-type", "text/csv");
+        response.setHeader("Content-disposition", "attachment;filename="+pairingCsv.getName());
+        Files.copy(Paths.get(pairingCsv.toURI()), response.getOutputStream());
+        response.getOutputStream().flush();
     }
 
     @DeleteMapping(path = "/pairing/{deviceId}")

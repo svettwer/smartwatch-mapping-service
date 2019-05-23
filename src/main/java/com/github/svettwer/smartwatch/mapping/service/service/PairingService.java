@@ -4,12 +4,17 @@ import com.github.svettwer.smartwatch.mapping.service.database.Pairing;
 import com.github.svettwer.smartwatch.mapping.service.database.PairingRepository;
 import com.github.svettwer.smartwatch.mapping.service.dto.PairingRequest;
 import com.github.svettwer.smartwatch.mapping.service.exception.NoSuchDeviceException;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -59,5 +64,26 @@ public class PairingService {
                     new PairingRequest(pairing.getCustomerId(),
                             pairing.getDeviceId()));
         }
+    }
+
+    public File getPairingsAsCsv() throws IOException {
+        final File file = new File("pairings.csv");
+        final FileWriter out = new FileWriter(file);
+        try(final CSVPrinter printer = getCsvPrinter(out)){
+            for (final Pairing pairing : getPairings()){
+                printer.printRecord(
+                        pairing.getDeviceId(),
+                        pairing.getCustomerId(),
+                        pairing.isTemporary());
+            }
+        }
+        return file;
+    }
+
+    private CSVPrinter getCsvPrinter(final FileWriter out) throws IOException {
+        return new CSVPrinter(out, CSVFormat
+                .DEFAULT
+                .withHeader("deviceId", "customerId", "is temporary")
+                .withDelimiter(';'));
     }
 }
