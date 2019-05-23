@@ -1,5 +1,6 @@
 package com.github.svettwer.smartwatch.mapping.service.controller;
 
+import com.github.svettwer.smartwatch.mapping.service.database.Pairing;
 import com.github.svettwer.smartwatch.mapping.service.exception.NoSuchDeviceException;
 import com.github.svettwer.smartwatch.mapping.service.service.PairingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.UUID;
 
@@ -32,8 +35,8 @@ public class UiController {
     }
 
     @DeleteMapping(path = "/pairing/{deviceId}")
-    public String homePage(@PathVariable() final UUID deviceId) throws NoSuchDeviceException {
+    public String homePage(@PathVariable() final UUID deviceId, final Model model) throws NoSuchDeviceException {
         pairingService.deletePairing(deviceId);
-        return "home";
+        return homePage(model);
     }
 }
