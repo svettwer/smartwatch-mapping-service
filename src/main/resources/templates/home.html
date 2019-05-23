@@ -22,36 +22,67 @@
         </style>
     </head>
     <body>
-        <p class="h1" th:text="${appName}"></p>
-        <div>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col"> Device Id </th>
-                        <th scope="col"> Customer Id </th>
-                        <th scope="col"> Temporary mapping </th>
-                        <th scope="col"> Delete mapping</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:if="${pairings.isEmpty()}">
-                        <td colspan="4"> No Pairings Available </td>
-                    </tr>
-                    <tr th:each="pairing : ${pairings}">
-                        <td th:text="${pairing.deviceId}"></td>
-                        <td th:text="${pairing.customerId}"></td>
-                        <td>
-                            <input type="checkbox" th:checked="${pairing.temporary}" value="1" readonly/>
-                        </td>
-                        <td><form action="#"
-                                  th:method="delete"
-                                  th:action="@{/pairing/{deviceId}(deviceId=${pairing.deviceId})}">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm">
+                    <p class="h1 text-center" th:text="${appName}"></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <div>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col"> Device Id </th>
+                                <th scope="col"> Customer Id </th>
+                                <th scope="col"> Temporary mapping </th>
+                                <th scope="col"> Delete mapping</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${pairings.isEmpty()}">
+                                <td colspan="4"> No Pairings Available </td>
+                            </tr>
+                            <tr th:each="pairing : ${pairings}">
+                                <td th:text="${pairing.deviceId}"></td>
+                                <td th:text="${pairing.customerId}"></td>
+                                <td>
+                                    <input type="checkbox" th:checked="${pairing.temporary}" value="1" readonly/>
+                                </td>
+                                <td><form action="#"
+                                          th:method="delete"
+                                          th:action="@{/pairing/{deviceId}(deviceId=${pairing.deviceId})}">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div>
+                        <br/>
+                        <p class="h3">Create new Pairing</p>
+                        <form action="#" th:action="@{/pairing}" th:object="${newPairing}" method="post">
+                            <div class="form-group">
+                                <label for="deviceId">Device ID</label>
+                                <input th:field="*{deviceId}" type="text" class="form-control" id="deviceId" aria-describedby="deviceId" placeholder="Enter Device ID">
+                            </div>
+                            <div class="form-group">
+                                <label for="customerId">Customer ID</label>
+                                <input th:field="*{customerId}" type="text" class="form-control" id="customerId" aria-describedby="customerId" placeholder="Enter Customer ID">
+                            </div>
+                            <div class="form-check">
+                                <input th:field="*{temporary}" type="checkbox" class="form-check-input" id="persistent">
+                                <label class="form-check-label" for="persistent">persistent</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

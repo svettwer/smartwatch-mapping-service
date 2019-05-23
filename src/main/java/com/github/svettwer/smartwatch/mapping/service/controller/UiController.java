@@ -31,12 +31,19 @@ public class UiController {
     public String homePage(final Model model) {
         model.addAttribute("appName", appName);
         model.addAttribute("pairings", pairingService.getPairings());
+        model.addAttribute("newPairing", new Pairing());
         return "home";
     }
 
     @DeleteMapping(path = "/pairing/{deviceId}")
     public String homePage(@PathVariable() final UUID deviceId, final Model model) throws NoSuchDeviceException {
         pairingService.deletePairing(deviceId);
+        return homePage(model);
+    }
+
+    @PostMapping("/pairing")
+    public String greetingSubmit(@ModelAttribute Pairing pairing, final Model model) {
+        pairingService.savePairing(pairing);
         return homePage(model);
     }
 }

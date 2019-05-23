@@ -30,7 +30,7 @@ public class PairingService {
     }
 
     public void createNewPairing(final PairingRequest pairingRequest){
-        logger.trace("creating new pairing: {}", pairingRequest);
+        logger.trace("creating new pairing from request: {}", pairingRequest);
         pairingRepository.save(new Pairing(
                 pairingRequest.getDeviceId(),
                 pairingRequest.getCustomerId(),
@@ -48,5 +48,16 @@ public class PairingService {
         final Optional<Pairing> byId = pairingRepository.findById(deviceId);
         pairingRepository.deleteById(deviceId);
         return byId.orElseThrow(() -> new NoSuchDeviceException(deviceId));
+    }
+
+    public void savePairing(final Pairing pairing){
+        logger.trace("creating new pairing: {}", pairing);
+        pairingRepository.save(pairing);
+        if(pairing.isTemporary()){
+            kafkaTemplate.send(
+                    "pairing.temporary",
+                    new PairingRequest(pairing.getCustomerId(),
+                            pairing.getDeviceId()));
+        }
     }
 }
