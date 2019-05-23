@@ -1,0 +1,17 @@
+{
+  "name": "e2e",
+  "version": "1.0.0",
+  "description": "Sakuli E2E tests for the smartwatch mapping service ui",
+  "scripts": {
+    "test": "sakuli run test-suite --browser=chrome"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/svettwer/smartwatch-mapping-service.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@sakuli/cli": "^2.0.0"
+  }
+}

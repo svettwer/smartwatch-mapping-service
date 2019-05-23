@@ -1,5 +1,8 @@
 .idea
 target
+**/node_modules
+**/sakuli.log
 
 ## domain files
 pairings.csv
+src/test/e2e/test-suite/test-case/*.png
