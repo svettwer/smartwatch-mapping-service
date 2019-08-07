@@ -12,6 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@sakuli/cli": "^2.0.0"
+    "@sakuli/cli": "^2.1.0"
   }
 }
