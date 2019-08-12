@@ -6,21 +6,12 @@ import com.consol.citrus.dsl.runner.TestRunnerAfterTestSupport;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.kafka.endpoint.KafkaEndpoint;
 import com.consol.citrus.variable.GlobalVariables;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
 public class TestSuiteConfiguration {
-
-    private Environment env;
-
-    @Autowired
-    public TestSuiteConfiguration(final Environment env) {
-        this.env = env;
-    }
 
     @Bean
     public GlobalVariables globalVariables(){
