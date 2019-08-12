@@ -63,7 +63,7 @@ public class TestSuiteConfiguration {
     }
 
     @Bean
-    public TestRunnerAfterTestSupport cleanUpDatabase(){
+    public TestRunnerAfterTestSupport cleanUp(){
         return new TestRunnerAfterTestSupport() {
             @Override
             public void afterTest(final TestRunner testRunner) {
