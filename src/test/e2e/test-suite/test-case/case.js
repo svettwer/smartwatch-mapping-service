@@ -22,8 +22,8 @@
         await _highlight(_textbox("deviceId"), HIGHLIGHT_TIME);
         await _highlight(_label("Customer ID"), HIGHLIGHT_TIME);
         await _highlight(_textbox("customerId"), HIGHLIGHT_TIME);
-        await _highlight(_checkbox("persistent"), HIGHLIGHT_TIME);
-        await _highlight(_label("persistent"), HIGHLIGHT_TIME);
+        await _highlight(_checkbox("temporary"), HIGHLIGHT_TIME);
+        await _highlight(_label("temporary"), HIGHLIGHT_TIME);
         await _highlight(_button("Submit"), HIGHLIGHT_TIME);
         tc.endOfStep('Check new pairing form layout');
     } catch (e) {
